@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>qk</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="stylesheet" href="css/main_Camera.css" />
+	</head>
+
+<body>
+<script type="text/javascript" src="js/util/adapter.js"></script>
+<script type="text/javascript" src="js/vonsole/vconsole.min.js"></script>
+<script type="text/javascript" src="js/three/three.js"></script>
+<script type="text/javascript" src="js/three/Loader/FBXLoader/FBXLoader.js"></script>
+<script type="text/javascript" src="js/three/Loader/FBXLoader/inflate.min.js"></script>
+<script type="text/javascript" src="js/three/Controls/OrbitControls.js"></script>
+<script type="text/javascript" src="js/util/ThreeHelper.js"></script>
+<script type="text/javascript" src="js/util/OpenCamera.js"></script>
+
+
+		<script type="module">
+			//打开手机调试器控制台
+			var vConsole = new VConsole();
+	
+			const threeHelper = new ThreeHelper();
+			const openCamera = new OpenCamera();
+			const camreass=[];
+			const setting = {
+				 model: 'model/trex_v3.fbx',
+				 scale: 0.02,
+				 position: [0, -5, 0],
+				 rotation: [0,30, 0]
+			 };
+
+
+					
+
+			//加载画布并打开后置摄像头
+			openCamera.initVideo();
+			openCamera.initCanvas();
+			
+			navigator.mediaDevices.enumerateDevices().then(function (devices) {
+				devices.forEach(function(e){
+			
+					if(e.kind=="videoinput")
+					{
+						camreass.push(e.deviceId)
+					}
+				})
+				openCamera.openCamera(false,false,camreass)
+					.then(msg => {
+						console.info(msg);
+					}).catch(err => {
+					console.info(err);
+				});
+						
+			})	
+		
+		
+		
+			threeHelper.loadObject (setting);
+		
+
+	
+		</script>
+
+	</body>
+</html>
